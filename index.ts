@@ -65,7 +65,7 @@ wss.on('connection', function connection(ws: WebSocket) {
     } else if (ws === reducerClient) {
       console.log("Received reducer client signal")
       state = reducer(state, JSON.parse(message))
-      send(client, JSON.stringify(overwriteState(state)))
+      send(reducerClient, JSON.stringify(overwriteState(state)))
     }
   });
 });
