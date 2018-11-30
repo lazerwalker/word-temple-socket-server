@@ -1,6 +1,7 @@
 import * as WebSocket from 'ws';
 
-const wss = new WebSocket.Server({ port: 8080 });
+const port: number = Number(process.env.PORT) || 8080
+const wss = new WebSocket.Server({ port });
 
 let host: WebSocket;
 let client: WebSocket;

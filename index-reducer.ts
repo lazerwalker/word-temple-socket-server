@@ -3,7 +3,8 @@ import reducer from './reducer';
 import { createState } from './state';
 import { overwriteState } from './actions';
 
-const wss = new WebSocket.Server({ port: 8080 });
+const port: number = Number(process.env.PORT) || 8080
+const wss = new WebSocket.Server({ port });
 
 let host: WebSocket;
 let client: WebSocket;
