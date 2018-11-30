@@ -4,8 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node index.ts",
-    "start-reducer": "ts-node index-reducer.ts"
+    "start": "ts-node index.ts"
   },
   "dependencies": {
     "@types/ws": "^4.0.0",

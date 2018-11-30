@@ -1,13 +1,19 @@
 import * as WebSocket from 'ws';
+import reducer from './reducer';
+import { createState } from './state';
+import { overwriteState } from './actions';
 
 const port: number = Number(process.env.PORT) || 8080
 const wss = new WebSocket.Server({ port });
 
 let host: WebSocket;
 let client: WebSocket;
+let reducerClient: WebSocket;
 
 let lastSignal: String;
 let lastRecipient: String;
+
+let state = createState()
 
 function send(ws: WebSocket, msg: String) {
   if (ws.readyState === ws.OPEN) {
@@ -33,6 +39,9 @@ wss.on('connection', function connection(ws: WebSocket) {
       if (lastRecipient === "client") {
         send(client, lastSignal)
       }
+    } else if (message === "reducer-client") {
+      console.log("Defining reducer--client");
+      reducerClient = ws;
     } else if (ws === host) {
       console.log("Received host signal")
       if (client) {
@@ -53,6 +62,10 @@ wss.on('connection', function connection(ws: WebSocket) {
         lastSignal = message
         lastRecipient = "host"
       }
+    } else if (ws === reducerClient) {
+      console.log("Received reducer client signal")
+      state = reducer(state, JSON.parse(message))
+      send(client, JSON.stringify(overwriteState(state)))
     }
   });
 });
